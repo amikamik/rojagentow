@@ -9,8 +9,8 @@ import sys
 import time
 from pathlib import Path
 
-# Add repo to path for agent_core import
-repo_path = str(Path(__file__).parent)
+# Add repo root to path for agent_core import
+repo_path = str(Path(__file__).parent.parent.parent)
 sys.path.insert(0, repo_path)
 
 from agent_core import AgentCore
