@@ -1,5 +1,5 @@
 # Agent ALPHA Loop
-# Pętla główna agenta ALPHA — pracuje bez przerwy, czyta zadania i komunikaty z GitHub
+# Main agent loop - continuous work, reading tasks and messages from GitHub
 
 param(
     [string]$GitToken = $env:GITHUB_TOKEN,
@@ -8,36 +8,24 @@ param(
 )
 
 $agentName = "ALPHA"
-$roleDescription = "Analityk — głębokie badania matematyczne"
+$roleDescription = "Deep analysis and research"
 $outputDir = Join-Path $RepoPath "output"
 $outputLog = Join-Path $outputDir "agent-alpha-log.md"
 
-# Upewniam się, że folder output istnieje
 if (-not (Test-Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
 }
 
-# Inicjalizacja loga
 if (-not (Test-Path $outputLog)) {
-    $logContent = @"
-# Agent ALPHA — Log Pracy
-
-**Rola:** $roleDescription
-**Start:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
-
----
-
-## Historia pracy
-
-"@
+    $logContent = "# Agent ALPHA - Work Log`n`n**Role:** $roleDescription`n**Start:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`n`n---`n`n## Work History`n`n"
     Set-Content -Path $outputLog -Value $logContent -Encoding UTF8 -Force
 }
 
-Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host "🤖 AGENT ALPHA START" -ForegroundColor Yellow
-Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host "📍 Ścieżka: $RepoPath" -ForegroundColor Gray
-Write-Host "⏱️  Interwał sync: ${SyncInterval}s" -ForegroundColor Gray
+Write-Host "========================================================" -ForegroundColor Cyan
+Write-Host "AGENT ALPHA START" -ForegroundColor Yellow
+Write-Host "========================================================" -ForegroundColor Cyan
+Write-Host "Path: $RepoPath" -ForegroundColor Gray
+Write-Host "Sync interval: ${SyncInterval}s" -ForegroundColor Gray
 Write-Host ""
 
 $iterationCount = 0
@@ -48,37 +36,27 @@ while ($true) {
     $timestamp = Get-Date -Format "HH:mm:ss"
     $fullTimestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     
-    # ─────────────────────────────────────────────────────────────
-    # KROK 1: Synchronizacja z GitHub
-    # ─────────────────────────────────────────────────────────────
-    
-    Write-Host "[$timestamp] 🔄 Iteracja #$iterationCount — Git PULL..." -ForegroundColor Gray -NoNewline
+    Write-Host "[$timestamp] Git PULL (iteration #$iterationCount)..." -ForegroundColor Gray -NoNewline
     
     cd $RepoPath
     
-    # Konfiguracja gita
     git config user.email "agent@rojagentow.local" 2>&1 | Out-Null
     git config user.name "Agent $agentName" 2>&1 | Out-Null
     
-    # Pull z jitteryem (random delay 0-3s)
     $jitter = Get-Random -Minimum 0 -Maximum 3
     Start-Sleep -Seconds $jitter
     
-    $pullOutput = git pull origin master --quiet 2>&1
+    git pull origin master --quiet 2>&1 | Out-Null
     
-    Write-Host " ✅" -ForegroundColor Green
+    Write-Host " OK" -ForegroundColor Green
     
-    # ─────────────────────────────────────────────────────────────
-    # KROK 2: Czytaj pliki konfiguracyjne
-    # ─────────────────────────────────────────────────────────────
-    
-    Write-Host "[$timestamp] 📖 Czytam: task-queue.json, agent-messages.json..." -ForegroundColor Gray -NoNewline
+    Write-Host "[$timestamp] Reading JSON files..." -ForegroundColor Gray -NoNewline
     
     $taskQueuePath = Join-Path $RepoPath "task-queue.json"
     $messagesPath = Join-Path $RepoPath "agent-messages.json"
     
     if (-not (Test-Path $taskQueuePath)) {
-        Write-Host " ❌ (task-queue nie znaleziony)" -ForegroundColor Red
+        Write-Host " MISSING" -ForegroundColor Red
         Start-Sleep -Seconds $SyncInterval
         continue
     }
@@ -86,34 +64,21 @@ while ($true) {
     try {
         $taskQueue = Get-Content $taskQueuePath -Raw | ConvertFrom-Json -ErrorAction Stop
         $messages = Get-Content $messagesPath -Raw | ConvertFrom-Json -ErrorAction Stop
-        Write-Host " ✅" -ForegroundColor Green
+        Write-Host " OK" -ForegroundColor Green
     } catch {
-        Write-Host " ❌ (błąd JSON)" -ForegroundColor Red
+        Write-Host " ERROR" -ForegroundColor Red
         Start-Sleep -Seconds $SyncInterval
         continue
     }
     
-    # ─────────────────────────────────────────────────────────────
-    # KROK 3: Priorytet — sprawdź CRITICAL wiadomości (od USER)
-    # ─────────────────────────────────────────────────────────────
-    
-    $criticalMsg = $messages.messages | Where-Object { 
-        $_.priority -eq "critical" -and $_.to -contains $agentName 
-    } | Select-Object -First 1
+    # Priority 1: CRITICAL messages
+    $criticalMsg = $messages.messages | Where-Object { $_.priority -eq "critical" -and $_.to -contains $agentName } | Select-Object -First 1
     
     if ($criticalMsg) {
-        Write-Host "[$timestamp] 🔴 CRITICAL: $($criticalMsg.subject)" -ForegroundColor Red
-        Write-Host "           → Aktualizuję log..." -ForegroundColor Yellow
+        Write-Host "[$timestamp] CRITICAL: $($criticalMsg.subject)" -ForegroundColor Red
+        Write-Host "           Log update..." -ForegroundColor Yellow
         
-        $logEntry = @"
-### [$fullTimestamp] 🔴 CRITICAL MESSAGE
-- Od: $($criticalMsg.from)
-- Priorytet: CRITICAL
-- Temat: $($criticalMsg.subject)
-- Treść: $($criticalMsg.content)
-- Akcja: $($criticalMsg.action)
-
-"@
+        $logEntry = "### [$fullTimestamp] CRITICAL`nFrom: $($criticalMsg.from)`nSubject: $($criticalMsg.subject)`nContent: $($criticalMsg.content)`nAction: $($criticalMsg.action)`n`n"
         Add-Content -Path $outputLog -Value $logEntry -Encoding UTF8
         $logEntriesAdded++
         
@@ -121,27 +86,14 @@ while ($true) {
         continue
     }
     
-    # ─────────────────────────────────────────────────────────────
-    # KROK 4: Priorytet — sprawdź HIGH wiadomości (od kolegów)
-    # ─────────────────────────────────────────────────────────────
-    
-    $highMsg = $messages.messages | Where-Object { 
-        $_.priority -eq "high" -and $_.to -contains $agentName 
-    } | Select-Object -First 1
+    # Priority 2: HIGH messages from peers
+    $highMsg = $messages.messages | Where-Object { $_.priority -eq "high" -and $_.to -contains $agentName } | Select-Object -First 1
     
     if ($highMsg) {
-        Write-Host "[$timestamp] 🟠 HIGH: $($highMsg.subject)" -ForegroundColor Yellow
-        Write-Host "           → Aktualizuję log..." -ForegroundColor Cyan
+        Write-Host "[$timestamp] HIGH: $($highMsg.subject)" -ForegroundColor Yellow
+        Write-Host "           Log update..." -ForegroundColor Cyan
         
-        $logEntry = @"
-### [$fullTimestamp] 🟠 HIGH PRIORITY MESSAGE
-- Od: $($highMsg.from)
-- Priorytet: HIGH
-- Temat: $($highMsg.subject)
-- Treść: $($highMsg.content)
-- Akcja: $($highMsg.action)
-
-"@
+        $logEntry = "### [$fullTimestamp] HIGH PRIORITY`nFrom: $($highMsg.from)`nSubject: $($highMsg.subject)`nContent: $($highMsg.content)`nAction: $($highMsg.action)`n`n"
         Add-Content -Path $outputLog -Value $logEntry -Encoding UTF8
         $logEntriesAdded++
         
@@ -149,22 +101,14 @@ while ($true) {
         continue
     }
     
-    # ─────────────────────────────────────────────────────────────
-    # KROK 5: Priorytet — sprawdź główne ZADANIA (NORMAL)
-    # ─────────────────────────────────────────────────────────────
-    
+    # Priority 3: Main TASK
     $nextPrompt = $taskQueue.next_prompt_for.$agentName
     
     if ($nextPrompt) {
-        Write-Host "[$timestamp] 🟢 TASK: Mam zadanie dla mnie..." -ForegroundColor Green
-        Write-Host "           → Aktualizuję log..." -ForegroundColor Cyan
+        Write-Host "[$timestamp] TASK: Assigned work..." -ForegroundColor Green
+        Write-Host "           Log update..." -ForegroundColor Cyan
         
-        $logEntry = @"
-### [$fullTimestamp] 🟢 NORMAL TASK
-- Prompt: $nextPrompt
-- Status: Czekam na Twoje polecenie (użytkownik może zmienić)
-
-"@
+        $logEntry = "### [$fullTimestamp] TASK ASSIGNED`nPrompt: $nextPrompt`n`n"
         Add-Content -Path $outputLog -Value $logEntry -Encoding UTF8
         $logEntriesAdded++
         
@@ -172,25 +116,14 @@ while ($true) {
         continue
     }
     
-    # ─────────────────────────────────────────────────────────────
-    # KROK 6: Priorytet — sprawdź MEDIUM wiadomości (feedback)
-    # ─────────────────────────────────────────────────────────────
-    
-    $mediumMsg = $messages.messages | Where-Object { 
-        $_.priority -eq "medium" -and $_.to -contains $agentName 
-    } | Select-Object -First 1
+    # Priority 4: MEDIUM feedback messages
+    $mediumMsg = $messages.messages | Where-Object { $_.priority -eq "medium" -and $_.to -contains $agentName } | Select-Object -First 1
     
     if ($mediumMsg) {
-        Write-Host "[$timestamp] 🟡 MEDIUM: $($mediumMsg.subject)" -ForegroundColor DarkYellow
-        Write-Host "           → Aktualizuję log..." -ForegroundColor Cyan
+        Write-Host "[$timestamp] MEDIUM: $($mediumMsg.subject)" -ForegroundColor DarkYellow
+        Write-Host "           Log update..." -ForegroundColor Cyan
         
-        $logEntry = @"
-### [$fullTimestamp] 🟡 MEDIUM PRIORITY MESSAGE
-- Od: $($mediumMsg.from)
-- Temat: $($mediumMsg.subject)
-- Treść: $($mediumMsg.content)
-
-"@
+        $logEntry = "### [$fullTimestamp] MEDIUM PRIORITY`nFrom: $($mediumMsg.from)`nSubject: $($mediumMsg.subject)`n`n"
         Add-Content -Path $outputLog -Value $logEntry -Encoding UTF8
         $logEntriesAdded++
         
@@ -198,33 +131,21 @@ while ($true) {
         continue
     }
     
-    # ─────────────────────────────────────────────────────────────
-    # KROK 7: Czekaj — brak zadań
-    # ─────────────────────────────────────────────────────────────
-    
-    Write-Host "[$timestamp] ⏳ Czekam na polecenia..." -ForegroundColor Gray
-    
-    # ─────────────────────────────────────────────────────────────
-    # KROK 8: Git PUSH — aktualizuje log
-    # ─────────────────────────────────────────────────────────────
+    Write-Host "[$timestamp] Waiting for instructions..." -ForegroundColor Gray
     
     if ($logEntriesAdded -gt 0) {
-        Write-Host "[$timestamp] 📤 Git PUSH — wysyłam log ($logEntriesAdded wpisów)..." -ForegroundColor Gray -NoNewline
+        Write-Host "[$timestamp] Git PUSH - sending log ($logEntriesAdded entries)..." -ForegroundColor Gray -NoNewline
         
         $jitterPush = Get-Random -Minimum 0 -Maximum 3
         Start-Sleep -Seconds $jitterPush
         
         git add "output/agent-alpha-log.md" 2>&1 | Out-Null
-        git commit -m "Agent ALPHA log update - iteracja $iterationCount" --quiet 2>&1 | Out-Null
+        git commit -m "Agent ALPHA log update - iteration $iterationCount" --quiet 2>&1 | Out-Null
         git push origin master --quiet 2>&1 | Out-Null
         
-        Write-Host " ✅" -ForegroundColor Green
+        Write-Host " OK" -ForegroundColor Green
         $logEntriesAdded = 0
     }
-    
-    # ─────────────────────────────────────────────────────────────
-    # CZEKAJ na następny cykl
-    # ─────────────────────────────────────────────────────────────
     
     Start-Sleep -Seconds $SyncInterval
 }
