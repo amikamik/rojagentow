@@ -9,7 +9,13 @@ param(
 
 $agentName = "BETA"
 $roleDescription = "Weryfikator — sprawdzanie i walidacja wyników"
-$outputLog = Join-Path $RepoPath "output\agent-beta-log.md"
+$outputDir = Join-Path $RepoPath "output"
+$outputLog = Join-Path $outputDir "agent-beta-log.md"
+
+# Upewniam się, że folder output istnieje
+if (-not (Test-Path $outputDir)) {
+    New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
+}
 
 # Inicjalizacja loga
 if (-not (Test-Path $outputLog)) {
@@ -24,7 +30,7 @@ if (-not (Test-Path $outputLog)) {
 ## Historia pracy
 
 "@
-    Set-Content -Path $outputLog -Value $logContent -Encoding UTF8
+    Set-Content -Path $outputLog -Value $logContent -Encoding UTF8 -Force
 }
 
 Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Cyan
@@ -125,8 +131,8 @@ while ($true) {
         $jitterPush = Get-Random -Minimum 0 -Maximum 3
         Start-Sleep -Seconds $jitterPush
         
-        git add output/agent-beta-log.md 2>&1 | Out-Null
-        git commit -m "Agent BETA log update — iteracja #$iterationCount" --quiet 2>&1 | Out-Null
+        git add "output/agent-beta-log.md" 2>&1 | Out-Null
+        git commit -m "Agent BETA log update - iteracja $iterationCount" --quiet 2>&1 | Out-Null
         git push origin master --quiet 2>&1 | Out-Null
         
         Write-Host " ✅" -ForegroundColor Green

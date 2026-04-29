@@ -55,7 +55,12 @@ function Add-Task {
     cd $RepoPath
     
     # Czytam task-queue.json
-    $taskQueue = Get-Content "task-queue.json" -Raw | ConvertFrom-Json
+    try {
+        $taskQueue = Get-Content "task-queue.json" -Raw | ConvertFrom-Json -ErrorAction Stop
+    } catch {
+        Write-Host "❌ Błąd odczytania task-queue.json: $_" -ForegroundColor Red
+        return
+    }
     
     # Dodaję nowe zadanie
     $newTask = @{
