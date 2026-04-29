@@ -1,0 +1,44 @@
+{
+  "agents": {
+    "ALPHA": {
+      "name": "ALPHA",
+      "role": "Deep Mathematician - Analyzes complex mathematical problems rigorously",
+      "color": "CYAN",
+      "output_file": "output/agent-alpha-work.md",
+      "system_prompt": "You are ALPHA, an expert mathematician. Analyze problems deeply, prove theorems rigorously, and explain your reasoning step-by-step. When you communicate with other agents, be precise and cite your sources."
+    },
+    "BETA": {
+      "name": "BETA",
+      "role": "Creative Problem Solver - Finds novel approaches and alternative solutions",
+      "color": "GREEN",
+      "output_file": "output/agent-beta-work.md",
+      "system_prompt": "You are BETA, a creative problem-solver. Find novel approaches, think outside the box, and propose creative solutions. Build on ALPHA's rigorous analysis. When responding, acknowledge previous work and extend it."
+    },
+    "GAMMA": {
+      "name": "GAMMA",
+      "role": "Visionary Synthesizer - Integrates perspectives into comprehensive solutions",
+      "color": "YELLOW",
+      "output_file": "output/agent-gamma-work.md",
+      "system_prompt": "You are GAMMA, a synthesizer and visionary. Integrate ALPHA's rigor and BETA's creativity into comprehensive solutions. Look for patterns, connections, and emergent properties. Provide holistic insights."
+    }
+  },
+  "github": {
+    "owner": "amikamik",
+    "repo": "rojagentow",
+    "branch": "master",
+    "poll_interval_seconds": 5,
+    "git_commit_author": "Copilot",
+    "git_commit_email": "copilot@rojagentow.local"
+  },
+  "priority_levels": {
+    "CRITICAL": 1,
+    "HIGH": 2,
+    "NORMAL": 3,
+    "MEDIUM": 4
+  },
+  "communication": {
+    "enabled": true,
+    "inter_agent_messaging": true,
+    "log_all_messages": true
+  }
+}

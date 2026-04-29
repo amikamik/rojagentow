@@ -1,20 +1,19 @@
 {
-  "version": "1.0",
-  "timestamp": "2026-04-29T21:00:00Z",
   "tasks": [
     {
-      "id": "task-001",
-      "title": "System jest gotowy do pracy",
-      "description": "Czekaj na polecenia od użytkownika. Obserwuj kanał komunikacyjny.",
-      "status": "pending",
-      "assigned_to": null,
-      "next_prompt_for": {
-        "ALPHA": "Cześć ALFA! System jest online. Czekam na Twojego pierwszego ruchu. Przeczytaj channel.md i czekaj na komunikaty.",
-        "BETA": "Cześć BETA! System jest online. Czekam na Twojego pierwszego ruchu. Przeczytaj channel.md i czekaj na komunikaty.",
-        "GAMMA": "Cześć GAMMA! System jest online. Czekam na Twojego pierwszego ruchu. Przeczytaj channel.md i czekaj na komunikaty."
-      },
-      "created_at": "2026-04-29T21:00:00Z"
+      "id": "demo-riemann",
+      "title": "Test: Analyze Riemann Hypothesis",
+      "description": "First test to verify real agents are working and can communicate",
+      "agents": ["ALPHA"],
+      "prompt": "Analyze the Riemann Hypothesis. What are the key mathematical challenges? List 3-5 main approaches researchers use.",
+      "created_at": "2026-04-29T21:28:00",
+      "status": "pending"
     }
   ],
+  "next_prompt_for": {
+    "ALPHA": "Analyze the Riemann Hypothesis. What are the key mathematical challenges? List 3-5 main approaches researchers use.",
+    "BETA": null,
+    "GAMMA": null
+  },
   "completed_tasks": []
 }
