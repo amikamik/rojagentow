@@ -41,12 +41,17 @@
       "timestamp": "2026-04-29T22:43:29.821232",
       "agent": "ALL",
       "task": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach."
+    },
+    {
+      "timestamp": "2026-04-29T22:54:27.765596",
+      "agent": "ALL",
+      "task": "roziazcie hipoteze rimanna"
     }
   ],
   "next_prompt_for": {
-    "ALPHA": null,
-    "BETA": null,
-    "GAMMA": null
+    "ALPHA": "roziazcie hipoteze rimanna",
+    "BETA": "roziazcie hipoteze rimanna",
+    "GAMMA": "roziazcie hipoteze rimanna"
   },
   "completed_tasks": []
 }
