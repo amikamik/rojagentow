@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-29T21:00:00Z",
+  "agents": [
+    {
+      "id": "ALPHA",
+      "name": "Agent Alpha",
+      "role": "Analityk — głębokie badania matematyczne",
+      "status": "ready",
+      "last_activity": null,
+      "loop_file": "agents/alpha/agent-alpha-loop.ps1",
+      "output_log": "output/agent-alpha-log.md"
+    },
+    {
+      "id": "BETA",
+      "name": "Agent Beta",
+      "role": "Weryfikator — sprawdzanie i walidacja wyników",
+      "status": "ready",
+      "last_activity": null,
+      "loop_file": "agents/beta/agent-beta-loop.ps1",
+      "output_log": "output/agent-beta-log.md"
+    },
+    {
+      "id": "GAMMA",
+      "name": "Agent Gamma",
+      "role": "Wizjonerka — myślenie multidimensjonalne i kreatywne",
+      "status": "ready",
+      "last_activity": null,
+      "loop_file": "agents/gamma/agent-gamma-loop.ps1",
+      "output_log": "output/agent-gamma-log.md"
+    }
+  ]
+}

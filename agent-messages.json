@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-29T21:00:00Z",
+  "messages": [],
+  "agent_inboxes": {
+    "ALPHA": {
+      "unread_count": 0,
+      "last_read": "2026-04-29T21:00:00Z",
+      "inbox": []
+    },
+    "BETA": {
+      "unread_count": 0,
+      "last_read": "2026-04-29T21:00:00Z",
+      "inbox": []
+    },
+    "GAMMA": {
+      "unread_count": 0,
+      "last_read": "2026-04-29T21:00:00Z",
+      "inbox": []
+    }
+  }
+}

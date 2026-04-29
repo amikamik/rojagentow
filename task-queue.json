@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-29T21:00:00Z",
+  "tasks": [
+    {
+      "id": "task-001",
+      "title": "System jest gotowy do pracy",
+      "description": "Czekaj na polecenia od użytkownika. Obserwuj kanał komunikacyjny.",
+      "status": "pending",
+      "assigned_to": null,
+      "next_prompt_for": {
+        "ALPHA": "Cześć ALFA! System jest online. Czekam na Twojego pierwszego ruchu. Przeczytaj channel.md i czekaj na komunikaty.",
+        "BETA": "Cześć BETA! System jest online. Czekam na Twojego pierwszego ruchu. Przeczytaj channel.md i czekaj na komunikaty.",
+        "GAMMA": "Cześć GAMMA! System jest online. Czekam na Twojego pierwszego ruchu. Przeczytaj channel.md i czekaj na komunikaty."
+      },
+      "created_at": "2026-04-29T21:00:00Z"
+    }
+  ],
+  "completed_tasks": []
+}
