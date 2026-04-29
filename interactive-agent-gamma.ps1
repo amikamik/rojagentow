@@ -6,7 +6,7 @@ param(
     [string]$RepoPath = $PSScriptRoot
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 $ProgressPreference = "SilentlyContinue"
 
 function Show-Header {
@@ -171,6 +171,10 @@ function Send-To-Copilot {
     $output = & copilot -i $fullPrompt 2>&1 | ForEach-Object {
         Write-Host $_ -ForegroundColor White
         $_
+    }
+    $exitCode = $LASTEXITCODE
+    if ($exitCode -ne 0) {
+        Write-Host "[COPILOT WARNING] copilot exited with code $exitCode" -ForegroundColor Yellow
     }
 
     Write-Host ""

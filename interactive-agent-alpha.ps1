@@ -7,18 +7,18 @@ param(
     [string]$RepoPath = $PSScriptRoot
 )
 
-$ErrorActionPreference = "SilentlyContinue"
+$ErrorActionPreference = "Continue"
 $ProgressPreference = "SilentlyContinue"
 
-# ════════════════════════════════════════════════════════════
+# ------------------------------------------------------------
 # TERMINAL HEADER
-# ════════════════════════════════════════════════════════════
+# ------------------------------------------------------------
 
 function Show-Header {
     Write-Host ""
-    Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Magenta
-    Write-Host "║ AGENT ALPHA - Deep Mathematician - INTERACTIVE COPILOT   ║" -ForegroundColor Magenta
-    Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Magenta
+    Write-Host "============================================================" -ForegroundColor Magenta
+    Write-Host "AGENT ALPHA - Deep Mathematician - INTERACTIVE COPILOT" -ForegroundColor Magenta
+    Write-Host "============================================================" -ForegroundColor Magenta
     Write-Host ""
     Write-Host "[ALPHA] Status: READY" -ForegroundColor Cyan
     Write-Host "[ALPHA] Role: Deep Mathematician - Analyzes complex problems mathematically" -ForegroundColor Cyan
@@ -27,9 +27,9 @@ function Show-Header {
     Write-Host ""
 }
 
-# ════════════════════════════════════════════════════════════
+# ------------------------------------------------------------
 # FUNCTIONS
-# ════════════════════════════════════════════════════════════
+# ------------------------------------------------------------
 
 function Log-Message {
     param($Level, $Message)
@@ -83,18 +83,18 @@ function Send-To-Copilot {
     param($Prompt)
     
     Write-Host ""
-    Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Blue
-    Write-Host "📤 SENDING PROMPT TO COPILOT..." -ForegroundColor Blue
-    Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Blue
+    Write-Host "============================================================" -ForegroundColor Blue
+    Write-Host "SENDING PROMPT TO COPILOT..." -ForegroundColor Blue
+    Write-Host "============================================================" -ForegroundColor Blue
     
     Write-Host ""
     Write-Host "PROMPT:" -ForegroundColor Yellow
     Write-Host $Prompt -ForegroundColor Cyan -BackgroundColor DarkGray
     
     Write-Host ""
-    Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Blue
+    Write-Host "============================================================" -ForegroundColor Blue
     Write-Host "[COPILOT THINKING...]" -ForegroundColor Magenta
-    Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Blue
+    Write-Host "============================================================" -ForegroundColor Blue
     Write-Host ""
     
     # Run copilot in INTERACTIVE mode - shows real output
@@ -104,9 +104,9 @@ function Send-To-Copilot {
     }
     
     Write-Host ""
-    Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Blue
+    Write-Host "============================================================" -ForegroundColor Blue
     Write-Host "[COPILOT RESPONSE COMPLETE]" -ForegroundColor Green
-    Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor Blue
+    Write-Host "============================================================" -ForegroundColor Blue
     Write-Host ""
     
     return ($output | Out-String)
@@ -178,9 +178,9 @@ function Send-Message-To-Agent {
     Log-Message "SUCCESS" "Message sent to $ToAgent ($Priority priority)"
 }
 
-# ════════════════════════════════════════════════════════════
+# ------------------------------------------------------------
 # MAIN LOOP
-# ════════════════════════════════════════════════════════════
+# ------------------------------------------------------------
 
 Show-Header
 
@@ -189,7 +189,7 @@ $iteration = 0
 while ($true) {
     $iteration++
     
-    Log-Message "DEBUG" "═══════════ Iteration $iteration ═══════════"
+    Log-Message "DEBUG" "----------- Iteration $iteration -----------"
     
     # STEP 1: Git pull
     if (Git-Pull) {
@@ -203,9 +203,9 @@ while ($true) {
     
     if ($prompt) {
         Log-Message "INFO" ""
-        Log-Message "INFO" "╔════════════════════════════════════════╗"
-        Log-Message "INFO" "║     🎯 NEW TASK RECEIVED! 🎯        ║"
-        Log-Message "INFO" "╚════════════════════════════════════════╝"
+        Log-Message "INFO" "----------------------------------------"
+        Log-Message "INFO" "NEW TASK RECEIVED"
+        Log-Message "INFO" "----------------------------------------"
         Log-Message "INFO" ""
         
         # STEP 3: Send to Copilot (INTERACTIVE - shows everything!)

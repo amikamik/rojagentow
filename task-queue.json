@@ -1,57 +1,59 @@
-{
-  "tasks": [
-    {
-      "id": "demo-riemann",
-      "title": "Test: Analyze Riemann Hypothesis",
-      "description": "First test to verify real agents are working and can communicate",
-      "agents": "ALPHA",
-      "prompt": "Analyze the Riemann Hypothesis. What are the key mathematical challenges? List 3-5 main approaches researchers use.",
-      "created_at": "2026-04-29T21:28:00",
-      "status": "pending"
-    },
-    {
-      "id": "roz",
-      "title": "s",
-      "description": "",
-      "agents": "ALPHA",
-      "prompt": "rozwiaz hipoteze rimanna",
-      "created_at": "2026-04-29T21:40:58.189107",
-      "status": "pending"
-    },
-    {
-      "description": "Quick test to see agent collaboration",
-      "title": "Test Task - AI Capabilities",
-      "id": "demo-test-001",
-      "prompt": "List 3 key areas where AI is most helpful today",
-      "created_at": "2026-04-29T21:45:45",
-      "agents": "ALPHA",
-      "status": "pending"
-    },
-    {
-      "timestamp": "2026-04-29T22:40:02.599605",
-      "agent": "ALPHA",
-      "task": "zadanie"
-    },
-    {
-      "timestamp": "2026-04-29T22:40:28.135974",
-      "agent": "BETA",
-      "task": "zrob cokolwiek"
-    },
-    {
-      "timestamp": "2026-04-29T22:43:29.821232",
-      "agent": "ALL",
-      "task": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach."
-    },
-    {
-      "timestamp": "2026-04-29T22:54:27.765596",
-      "agent": "ALL",
-      "task": "roziazcie hipoteze rimanna"
-    }
-  ],
-  "next_prompt_for": {
-    "ALPHA": "roziazcie hipoteze rimanna",
-    "BETA": "roziazcie hipoteze rimanna",
-    "GAMMA": "roziazcie hipoteze rimanna"
-  },
-  "completed_tasks": []
+﻿{
+    "tasks":  [
+                  {
+                      "id":  "demo-riemann",
+                      "title":  "Test: Analyze Riemann Hypothesis",
+                      "description":  "First test to verify real agents are working and can communicate",
+                      "agents":  "ALPHA",
+                      "prompt":  "Analyze the Riemann Hypothesis. What are the key mathematical challenges? List 3-5 main approaches researchers use.",
+                      "created_at":  "2026-04-29T21:28:00",
+                      "status":  "pending"
+                  },
+                  {
+                      "id":  "roz",
+                      "title":  "s",
+                      "description":  "",
+                      "agents":  "ALPHA",
+                      "prompt":  "rozwiaz hipoteze rimanna",
+                      "created_at":  "2026-04-29T21:40:58.189107",
+                      "status":  "pending"
+                  },
+                  {
+                      "description":  "Quick test to see agent collaboration",
+                      "title":  "Test Task - AI Capabilities",
+                      "id":  "demo-test-001",
+                      "prompt":  "List 3 key areas where AI is most helpful today",
+                      "created_at":  "2026-04-29T21:45:45",
+                      "agents":  "ALPHA",
+                      "status":  "pending"
+                  },
+                  {
+                      "timestamp":  "2026-04-29T22:40:02.599605",
+                      "agent":  "ALPHA",
+                      "task":  "zadanie"
+                  },
+                  {
+                      "timestamp":  "2026-04-29T22:40:28.135974",
+                      "agent":  "BETA",
+                      "task":  "zrob cokolwiek"
+                  },
+                  {
+                      "timestamp":  "2026-04-29T22:43:29.821232",
+                      "agent":  "ALL",
+                      "task":  "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach."
+                  },
+                  {
+                      "timestamp":  "2026-04-29T22:54:27.765596",
+                      "agent":  "ALL",
+                      "task":  "roziazcie hipoteze rimanna"
+                  }
+              ],
+    "next_prompt_for":  {
+                            "ALPHA":  "roziazcie hipoteze rimanna",
+                            "BETA":  "roziazcie hipoteze rimanna",
+                            "GAMMA":  null
+                        },
+    "completed_tasks":  [
+
+                        ]
 }
