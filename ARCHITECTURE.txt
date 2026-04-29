@@ -1,0 +1,285 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║         🤖 AUTONOMOUS MULTI-AGENT ORCHESTRATION ARCHITECTURE                 ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           AGENT COMMUNICATION FLOW                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  TERMINAL 1 (ALPHA)          TERMINAL 2 (BETA)           TERMINAL 3 (GAMMA)
+  ─────────────────           ───────────────             ──────────────────
+  
+  [ALPHA LOOP]                [BETA LOOP]                 [GAMMA LOOP]
+        ↓                            ↓                           ↓
+   5s polling                   5s polling                  5s polling
+        ↓                            ↓                           ↓
+   git pull ←────────────────────→ git pull ←─────────────→ git pull
+        ↓                            ↓                           ↓
+   Read:                         Read:                       Read:
+   • task-queue.json             • task-queue.json          • task-queue.json
+   • agent-messages.json         • agent-messages.json      • agent-messages.json
+   • BETA output file            • ALPHA output file        • ALPHA & BETA output
+        ↓                            ↓                           ↓
+   Check Priority:              Check Priority:             Check Priority:
+   1️⃣ CRITICAL                  1️⃣ CRITICAL                1️⃣ CRITICAL
+   2️⃣ HIGH                       2️⃣ HIGH                    2️⃣ HIGH
+   3️⃣ NORMAL                     3️⃣ NORMAL                  3️⃣ NORMAL
+   4️⃣ MEDIUM                     4️⃣ MEDIUM                  4️⃣ MEDIUM
+        ↓                            ↓                           ↓
+   Found prompt!                Found prompt!               Found prompt!
+        ↓                            ↓                           ↓
+   copilot -i                   copilot -i                  copilot -i
+   "analyze X"                  "[ALPHA] + be creative"    "[ALPHA+BETA] synthesize"
+        ↓                            ↓                           ↓
+   Copilot runs...              Copilot runs...             Copilot runs...
+        ↓                            ↓                           ↓
+   Output saved to:             Output saved to:            Output saved to:
+   agent-alpha-work.md          agent-beta-work.md         agent-gamma-work.md
+        ↓                            ↓                           ↓
+   Send messages to:            Send messages to:           Send messages to:
+   • BETA (HIGH)                • GAMMA (HIGH)              • ALPHA (NORMAL)
+   • GAMMA (NORMAL)             • ALPHA (NORMAL)            • BETA (NORMAL)
+        ↓                            ↓                           ↓
+   git commit & push            git commit & push           git commit & push
+        ↓                            ↓                           ↓
+   Sleep 5s                     Sleep 5s                    Sleep 5s
+        ↑                            ↑                           ↑
+        └────────────────────────────────────────────────────────┘
+                          Loop back (infinite)
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         GITHUB CENTRAL REPOSITORY                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  amikamik/rojagentow (GitHub)
+  ├── config.json              ← Agent configuration (roles, endpoints)
+  ├── task-queue.json          ← User assigns: next_prompt_for[AGENT]
+  ├── agent-messages.json      ← Inter-agent inbox (4 priority levels)
+  │
+  ├── output/
+  │   ├── agent-alpha-work.md  ← ALPHA writes timestamped results here
+  │   ├── agent-beta-work.md   ← BETA writes timestamped results here
+  │   └── agent-gamma-work.md  ← GAMMA writes timestamped results here
+  │
+  └── [Git Log shows commits from each agent]
+      • ALPHA: NORMAL task completed [iteration 42]
+      • BETA: HIGH priority response to ALPHA
+      • GAMMA: Synthesized solution ready
+
+  Each agent reads/writes to shared GitHub repo:
+  1. git pull origin master          (get latest)
+  2. Read JSON files (messages, tasks)
+  3. Process highest priority
+  4. run copilot -i "prompt"
+  5. Write output to Markdown file
+  6. git add, commit, push
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        PRIORITY QUEUE ALGORITHM                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Agent pulls agent-messages.json and checks inbox:
+
+  ┌─────────────────────────────────────────────────────┐
+  │ agent_inboxes.ALPHA.messages = [msg1, msg2, msg3]  │
+  └─────────────────────────────────────────────────────┘
+                              ↓
+  ┌─────────────────────────────────────────────────────┐
+  │ SORT by priority:                                   │
+  │   1. "critical" (from USER)                         │
+  │   2. "high"     (from other agents)                 │
+  │   3. "normal"   (from task queue)                   │
+  │   4. "medium"   (feedback)                          │
+  └─────────────────────────────────────────────────────┘
+                              ↓
+  ┌─────────────────────────────────────────────────────┐
+  │ Find first unread message with status="unread"      │
+  └─────────────────────────────────────────────────────┘
+                              ↓
+  ┌─────────────────────────────────────────────────────┐
+  │ If found: Execute that prompt                       │
+  │ Else: Check task-queue.json[next_prompt_for.ALPHA] │
+  │ Else: Idle (no work)                                │
+  └─────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          EXAMPLE: RIEMANN TASK                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  TIME  │  ACTION                                 │  WHERE
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+0s  │ User via Master Control adds task       │ master_control.py
+        │ task-queue.json updated                 │ task-queue.json
+        │ Pushed to GitHub                        │ github.com/amikamik/rojagentow
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+1s  │ ALPHA: git pull origin master           │ ALPHA Terminal
+        │ ALPHA sees: next_prompt_for.ALPHA =     │
+        │   "Analyze Riemann Hypothesis"          │
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+2s  │ ALPHA: copilot -i                       │ ALPHA Terminal + Copilot
+        │ "Analyze Riemann Hypothesis..."         │
+        │ Running...                              │
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+7s  │ ALPHA: Copilot completes, writes output │ output/agent-alpha-work.md
+        │ ALPHA: Sends HIGH to BETA               │ agent-messages.json
+        │ ALPHA: git commit & push                │ GitHub commit
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+8s  │ BETA: git pull origin master            │ BETA Terminal
+        │ BETA sees HIGH from ALPHA               │ agent-messages.json
+        │ BETA reads: output/agent-alpha-work.md  │ Local file
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+9s  │ BETA: copilot -i                        │ BETA Terminal + Copilot
+        │ "[ALPHA context] Find creative approach"│
+        │ Running...                              │
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+14s │ BETA: Complete, sends HIGH to GAMMA     │ agent-messages.json
+        │ BETA: git push                          │ GitHub commit
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+15s │ GAMMA: git pull, sees HIGH from BETA    │ GAMMA Terminal
+        │ GAMMA reads both outputs for context    │ output/agent-*.md
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+16s │ GAMMA: copilot -i                       │ GAMMA Terminal + Copilot
+        │ "[ALPHA+BETA context] Synthesize"       │
+        │ Running...                              │
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  T+21s │ GAMMA: Complete, updates others         │ agent-messages.json
+        │ GAMMA: git push                         │ GitHub commit
+  ──────┼─────────────────────────────────────────┼────────────────────────────
+  
+  RESULT: 21 seconds from start to complete synthesis
+           Full collaboration chain: ALPHA → BETA → GAMMA
+           All saved to GitHub with full audit trail
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         FILE STRUCTURE AT RUNTIME                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  config.json (shared by all agents)
+  {
+    "agents": {
+      "ALPHA": { "role": "Deep Mathematician", ... },
+      "BETA": { "role": "Creative Problem Solver", ... },
+      "GAMMA": { "role": "Visionary Synthesizer", ... }
+    },
+    "github": { "poll_interval_seconds": 5, ... }
+  }
+
+  task-queue.json (user assigns work here)
+  {
+    "next_prompt_for": {
+      "ALPHA": "Analyze Riemann Hypothesis...",  ← ALPHA will read this
+      "BETA": null,                              ← No work for BETA right now
+      "GAMMA": null                              ← No work for GAMMA right now
+    }
+  }
+
+  agent-messages.json (inter-agent communication)
+  {
+    "agent_inboxes": {
+      "ALPHA": {
+        "messages": [
+          {
+            "from_agent": "USER",
+            "priority": "critical",
+            "content": "Stop! URGENT TASK",
+            "status": "unread"
+          }
+        ],
+        "unread_count": 1
+      },
+      "BETA": {
+        "messages": [
+          {
+            "from_agent": "ALPHA",
+            "priority": "high",
+            "content": "I found approach X, respond to it",
+            "status": "unread"
+          }
+        ],
+        "unread_count": 1
+      }
+    }
+  }
+
+  output/agent-alpha-work.md (ALPHA writes here)
+  ============================================================
+  [2026-04-29 21:35:47] Task Response [NORMAL]
+  ============================================================
+  Analyzing the Riemann Hypothesis...
+  [detailed analysis from copilot]
+  ...continues...
+
+  output/agent-beta-work.md (BETA writes here)
+  output/agent-gamma-work.md (GAMMA writes here)
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         KEY DESIGN DECISIONS                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  ✓ Polling-based (vs event-based)
+    - Simpler to implement
+    - No WebSocket complexity
+    - Works with GitHub's limitations
+    - 5-second latency acceptable for most tasks
+
+  ✓ JSON for communication (vs database)
+    - GitHub-native (just commit files)
+    - Version controlled (see all history)
+    - Easy to debug (human-readable)
+    - No external dependencies
+
+  ✓ Output files for context (vs shared memory)
+    - Each agent sees full history
+    - Easy to trace decision-making
+    - Works across agent restarts
+    - GitHub backup included
+
+  ✓ 4-level priority hierarchy
+    - Prevents starvation of urgent work
+    - Agents can interrupt themselves
+    - Extensible (easy to add levels)
+    - Clear precedence rules
+
+  ✓ Shared agent_core.py library
+    - No code duplication
+    - Consistent behavior
+    - Easy to add new agents
+    - Centralized update location
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     HOW TO EXTEND THE SYSTEM                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Add Agent DELTA?
+  1. Add to config.json:
+     "DELTA": { "role": "...", "output_file": "output/agent-delta-work.md" }
+
+  2. Copy agent-alpha.py → agents/delta/agent-delta.py
+     Change: agent = AgentCore("DELTA", repo_path)
+
+  3. Add inbox to agent-messages.json:
+     "DELTA": { "messages": [], "unread_count": 0 }
+
+  4. Run: python agents/delta/agent-delta.py (in separate terminal)
+
+  5. Master Control automatically works with new agent!
+
+  Add Custom Priority Level?
+  1. Edit agent_core.py select_next_prompt()
+  2. Insert new priority check between existing levels
+  3. Update config.json priority_levels
+  4. All agents automatically use new level
+
+  Add Webhook integration?
+  1. Create webhook-listener.py
+  2. Convert webhook events → agent-messages.json
+  3. Agents continue working unchanged
+
+
+════════════════════════════════════════════════════════════════════════════════
