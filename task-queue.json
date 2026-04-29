@@ -4,14 +4,27 @@
       "id": "demo-riemann",
       "title": "Test: Analyze Riemann Hypothesis",
       "description": "First test to verify real agents are working and can communicate",
-      "agents": ["ALPHA"],
+      "agents": [
+        "ALPHA"
+      ],
       "prompt": "Analyze the Riemann Hypothesis. What are the key mathematical challenges? List 3-5 main approaches researchers use.",
       "created_at": "2026-04-29T21:28:00",
+      "status": "pending"
+    },
+    {
+      "id": "roz",
+      "title": "s",
+      "description": "",
+      "agents": [
+        "ALPHA"
+      ],
+      "prompt": "rozwiaz hipoteze rimanna",
+      "created_at": "2026-04-29T21:40:58.189107",
       "status": "pending"
     }
   ],
   "next_prompt_for": {
-    "ALPHA": "Analyze the Riemann Hypothesis. What are the key mathematical challenges? List 3-5 main approaches researchers use.",
+    "ALPHA": "rozwiaz hipoteze rimanna",
     "BETA": null,
     "GAMMA": null
   },
