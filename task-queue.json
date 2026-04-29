@@ -36,12 +36,17 @@
       "timestamp": "2026-04-29T22:40:28.135974",
       "agent": "BETA",
       "task": "zrob cokolwiek"
+    },
+    {
+      "timestamp": "2026-04-29T22:43:29.821232",
+      "agent": "ALL",
+      "task": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach."
     }
   ],
   "next_prompt_for": {
-    "ALPHA": "zadanie",
-    "BETA": "zrob cokolwiek",
-    "GAMMA": null
+    "ALPHA": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach.",
+    "BETA": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach.",
+    "GAMMA": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach."
   },
   "completed_tasks": []
 }
