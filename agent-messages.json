@@ -1,13 +1,35 @@
 {
-  "messages": [],
+  "messages": [
+    {
+      "id": "ALPHA-to-BETA-1777491859",
+      "from_agent": "ALPHA",
+      "to_agent": "BETA",
+      "subject": "ALPHA: Test Complete",
+      "content": "ALPHA test complete. Response: Hipoteza Riemanna to jeden z **7 ProblemĂłw Milenijnych** i pozostaje **nierozwiÄ…zana od 1859 roku** â€” ĹĽaden matematyk na Ĺ›wiecie jej nie udowodniĹ‚.  Nie jestem w stanie jej rozwiÄ…zaÄ‡. Jestem ",
+      "priority": "high",
+      "status": "unread",
+      "timestamp": "2026-04-29T21:44:19.831259"
+    }
+  ],
   "agent_inboxes": {
     "ALPHA": {
       "messages": [],
       "unread_count": 0
     },
     "BETA": {
-      "messages": [],
-      "unread_count": 0
+      "messages": [
+        {
+          "id": "ALPHA-to-BETA-1777491859",
+          "from_agent": "ALPHA",
+          "to_agent": "BETA",
+          "subject": "ALPHA: Test Complete",
+          "content": "ALPHA test complete. Response: Hipoteza Riemanna to jeden z **7 ProblemĂłw Milenijnych** i pozostaje **nierozwiÄ…zana od 1859 roku** â€” ĹĽaden matematyk na Ĺ›wiecie jej nie udowodniĹ‚.  Nie jestem w stanie jej rozwiÄ…zaÄ‡. Jestem ",
+          "priority": "high",
+          "status": "unread",
+          "timestamp": "2026-04-29T21:44:19.831259"
+        }
+      ],
+      "unread_count": 1
     },
     "GAMMA": {
       "messages": [],
