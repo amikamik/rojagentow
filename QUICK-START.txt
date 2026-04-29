@@ -1,0 +1,269 @@
+🚀 QUICK START GUIDE - AUTONOMOUS AGENTS
+
+════════════════════════════════════════════════════════════════════
+
+STEP 1: LAUNCH ALL AGENTS IN SEPARATE TERMINALS
+────────────────────────────────────────────────
+
+  Open Terminal 1 and run:
+  
+  C:\Users\hp\Desktop\projekty_vs_code_porzadek\rojagentow> launch-agents.bat
+  
+  This will open THREE new windows:
+  • AGENT ALPHA - Deep Mathematician
+  • AGENT BETA - Creative Problem Solver  
+  • AGENT GAMMA - Visionary Synthesizer
+  
+  Each window shows colored logs as agents work.
+
+════════════════════════════════════════════════════════════════════
+
+STEP 2: OPEN MASTER CONTROL IN ANOTHER TERMINAL
+────────────────────────────────────────────────
+
+  Open Terminal 2 and run:
+  
+  C:\Users\hp\Desktop\projekty_vs_code_porzadek\rojagentow> python launch-control.py
+  
+  You'll see an interactive menu:
+  
+  [1] Add Task          - Give agents work to do
+  [2] CRITICAL Message  - Send urgent command (stops all other work)
+  [3] HIGH Message      - Send agent-to-agent priority messages
+  [4] Launch Agent      - Start an agent in a new terminal
+  [5] Show Agent Status - See what agents are working on
+  [6] Monitor Agent Logs - Watch agent output in real-time
+  [7] Git Sync          - Pull/push changes to GitHub
+  [8] Show Task Queue   - See pending work
+  [0] Exit              - Close control panel
+
+════════════════════════════════════════════════════════════════════
+
+STEP 3: GIVE AGENTS A TASK
+──────────────────────────
+
+  Master Control → [1] Add Task
+  
+  Example input:
+    Task ID: math-001
+    Title: Analyze Riemann Hypothesis
+    Agents: [1] ALPHA (select just ALPHA for this test)
+    Prompt: Provide a brief analysis of the Riemann Hypothesis.
+            What are the main approaches to solving it?
+
+  After you press Enter:
+  • Task is added to task-queue.json
+  • File is committed to GitHub
+  • ALPHA's terminal will see it in 5 seconds
+  • ALPHA will run: copilot -i "[your prompt]"
+  • Output appears in ALPHA's window AND output/agent-alpha-work.md
+
+════════════════════════════════════════════════════════════════════
+
+STEP 4: WATCH THE AGENTS COMMUNICATE
+────────────────────────────────────
+
+  Timeline:
+
+  T+0s:   ALPHA reads your prompt from GitHub
+  T+0-5s: ALPHA runs copilot -i with your prompt
+  T+5s:   ALPHA writes output to alpha-work.md
+          ALPHA sends HIGH priority message to BETA
+          ALPHA pushes to GitHub
+          
+  T+5s:   BETA reads GitHub, finds message from ALPHA
+  T+5-10s: BETA reads ALPHA's output file for context
+           BETA runs copilot -i with [ALPHA's work + your prompt]
+  T+10s:  BETA writes to beta-work.md
+          BETA sends message to GAMMA
+          BETA pushes to GitHub
+          
+  T+10s:  GAMMA sees HIGH priority from BETA
+  T+10-15s: GAMMA reads ALPHA's AND BETA's work
+            GAMMA synthesizes into comprehensive solution
+  T+15s:  GAMMA writes to gamma-work.md
+          GAMMA sends updates to both ALPHA and BETA
+          GAMMA pushes to GitHub
+
+  All of this happens AUTOMATICALLY without your intervention!
+
+════════════════════════════════════════════════════════════════════
+
+STEP 5: MONITOR PROGRESS
+────────────────────────
+
+  Option A: Watch agent terminal windows (real-time colored logs)
+  Option B: Master Control → [6] Monitor Logs (view output files)
+  Option C: Master Control → [5] Show Agent Status (summary)
+  Option D: GitHub → https://github.com/amikamik/rojagentow
+            See commits from each agent
+
+════════════════════════════════════════════════════════════════════
+
+WHAT'S HAPPENING UNDER THE HOOD?
+─────────────────────────────────
+
+  Each agent runs this loop (every 5 seconds):
+
+  1. git pull origin master
+     → Get latest tasks and messages from GitHub
+
+  2. Select highest priority prompt
+     CRITICAL (user commands)
+       ↓
+     HIGH (from other agents)
+       ↓
+     NORMAL (from task queue)
+       ↓
+     MEDIUM (feedback)
+
+  3. If HIGH or NORMAL: Get context from other agents
+     Read their output/agent-X-work.md files
+
+  4. Run: copilot -i "prompt [+ context from other agents]"
+
+  5. Write results to output/agent-X-work.md
+     Timestamp each entry
+
+  6. If appropriate: Send HIGH or NORMAL priority messages
+     to other agents (stored in agent-messages.json)
+
+  7. git add -A && git commit && git push
+
+  8. Sleep 5 seconds
+
+  9. Loop back to step 1 (infinite)
+
+════════════════════════════════════════════════════════════════════
+
+PRIORITY LEVELS EXPLAINED
+─────────────────────────
+
+  🔴 CRITICAL (priority="critical")
+     From: USER via Master Control
+     Effect: Agent drops everything and does this immediately
+     Use: "ALPHA, stop everything and analyze THIS!"
+
+  🟠 HIGH (priority="high")
+     From: Other agents OR user
+     Effect: Agent responds to this before normal tasks
+     Use: Agent A completed task → tells B "read my output"
+     
+  🟡 NORMAL (priority="normal")
+     From: task-queue.json (default for user tasks)
+     Effect: Normal work priority
+     Use: Regular task assignments
+     
+  🟢 MEDIUM (priority="medium")
+     From: Agent feedback/questions
+     Effect: Address when there's time
+     Use: "Did you consider approach X?"
+
+════════════════════════════════════════════════════════════════════
+
+TESTING THE SYSTEM
+──────────────────
+
+  TEST 1: Basic Task (NORMAL priority)
+  ──────────────────────────────────
+  Master Control → [1] Add Task
+  - Task: "Write a summary of P vs NP problem"
+  - Agent: ALPHA
+  - Watch ALPHA terminal
+  
+  TEST 2: Inter-Agent Communication
+  ──────────────────────────────────
+  Master Control → [1] Add Task
+  - Task: "What's a creative approach to the Collatz Conjecture?"
+  - Agent: ALPHA (first)
+  - Wait 15 seconds
+  - Master Control → [1] Add Task
+  - Task: "Extend the approach to higher dimensions"
+  - Agent: BETA
+  - Watch as BETA reads ALPHA's work automatically
+  
+  TEST 3: CRITICAL Priority
+  ─────────────────────────
+  (After agents are working)
+  Master Control → [2] CRITICAL Message
+  - To agent: ALPHA
+  - Subject: "URGENT"
+  - Message: "Stop everything and summarize your progress so far"
+  - Watch ALPHA immediately switch to this task
+  
+  TEST 4: Agent Status
+  ───────────────────
+  Master Control → [5] Show Agent Status
+  - See number of unread messages
+  - See if they have tasks waiting
+  - See if they have output files
+
+════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING
+───────────────
+
+  Q: Agents don't appear in terminals?
+  A: Run `python launch-control.py` → [4] Launch Agent
+     Select which agent to launch
+
+  Q: Agents started but not doing anything?
+  A: Master Control → [1] Add Task
+     Make sure you give them work to do!
+
+  Q: Messages not appearing between agents?
+  A: Master Control → [5] Show Agent Status
+     Check unread_count
+     View agent-messages.json to verify format
+
+  Q: Agent terminal showing errors?
+  A: Check in that terminal:
+     - Does `copilot -i "test"` work manually?
+     - Is GitHub token set? Check README-REAL-AGENTS.md
+
+  Q: Want to stop an agent?
+  A: Just close that agent's terminal window
+     Agent will cleanly shutdown
+
+  Q: Want to restart?
+  A: Close all agent windows
+     Run `launch-agents.bat` again
+
+════════════════════════════════════════════════════════════════════
+
+CONFIGURATION FILES
+───────────────────
+
+  config.json              → Agent roles, GitHub settings, poll interval
+  task-queue.json          → User-assigned tasks (next_prompt_for)
+  agent-messages.json      → Inter-agent inbox and message bus
+  output/agent-X-work.md   → Agent output logs (timestamped)
+
+  Edit these to customize behavior!
+
+════════════════════════════════════════════════════════════════════
+
+GITHUB INTEGRATION
+──────────────────
+
+  All agents sync with: https://github.com/amikamik/rojagentow
+
+  Every 5 seconds, each agent:
+  1. Pulls latest changes
+  2. Processes new messages
+  3. Commits their work
+  4. Pushes results
+
+  See all commits → git log (will show "ALPHA:", "BETA:", "GAMMA:")
+
+════════════════════════════════════════════════════════════════════
+
+READY? LET'S GO! 🚀
+──────────────────
+
+  Terminal 1:  launch-agents.bat
+  Terminal 2:  python launch-control.py
+  
+  Then start giving them tasks!
+
+════════════════════════════════════════════════════════════════════
