@@ -44,9 +44,9 @@
     }
   ],
   "next_prompt_for": {
-    "ALPHA": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach.",
+    "ALPHA": null,
     "BETA": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach.",
-    "GAMMA": "DEMO: ALPHA ma dac analize, BETA alternatywe, GAMMA synteze o Python vs Go w 3 krotkich punktach."
+    "GAMMA": null
   },
   "completed_tasks": []
 }
