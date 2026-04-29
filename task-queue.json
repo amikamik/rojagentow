@@ -31,11 +31,16 @@
       "timestamp": "2026-04-29T22:40:02.599605",
       "agent": "ALPHA",
       "task": "zadanie"
+    },
+    {
+      "timestamp": "2026-04-29T22:40:28.135974",
+      "agent": "BETA",
+      "task": "zrob cokolwiek"
     }
   ],
   "next_prompt_for": {
     "ALPHA": "zadanie",
-    "BETA": null,
+    "BETA": "zrob cokolwiek",
     "GAMMA": null
   },
   "completed_tasks": []
