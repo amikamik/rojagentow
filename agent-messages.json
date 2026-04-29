@@ -7,7 +7,7 @@
       "subject": "ALPHA: Test Complete",
       "content": "ALPHA test complete. Response: Hipoteza Riemanna to jeden z **7 ProblemĂłw Milenijnych** i pozostaje **nierozwiÄ…zana od 1859 roku** â€” ĹĽaden matematyk na Ĺ›wiecie jej nie udowodniĹ‚.  Nie jestem w stanie jej rozwiÄ…zaÄ‡. Jestem ",
       "priority": "high",
-      "status": "unread",
+      "status": "read",
       "timestamp": "2026-04-29T21:44:19.831259"
     },
     {
@@ -27,14 +27,45 @@
       "to_agent": "GAMMA",
       "content": "1. **ALPHA (analiza):** Python wygrywa szybko┼Ťci─ů tworzenia i ekosystemem (AI/data), a Go wydajno┼Ťci─ů runtime, prost─ů wsp├│┼ébie┼╝no┼Ťci─ů i mniejszym narzutem operacyjnym.  \r\n\r\n2. **BETA (alternatywa):** Zamiast ÔÇ×albo-alboÔÇŁ, sensowny wariant to Python do logiki/ML i Go do us┼éug API o du┼╝ym ruchu.  \r\n\r\n3. **GAMMA (synteza):** Je┼Ťli liczy si─Ö tempo i elastyczno┼Ť─ç ÔÇö Python; je┼Ťli stabilna wydajno┼Ť─ç i skalowanie backendu ÔÇö Go; w praktyce cz─Östo najlepszy jest uk┼éad hybrydowy.\r\n\r\n\r\nChanges   +0 -0\r\nRequests  1 Premium (19s)\r\nTokens    ÔćĹ 18.9k ÔÇó Ôćô 557 ÔÇó 17.9k (cached) ÔÇó 401 (reasoning)\r\n",
       "subject": "BETA: Creative Approach",
-      "status": "unread",
+      "status": "read",
       "id": "5c888cf2-b321-4f6c-b0ef-f29604c438b3"
+    },
+    {
+      "id": "8f801807-a893-46ee-947b-74fed81d2a52",
+      "from_agent": "GAMMA",
+      "to_agent": "ALPHA",
+      "subject": "GAMMA: Integrated Synthesis",
+      "content": "GAMMA completed synthesis. See output/agent-gamma-work.md",
+      "priority": "NORMAL",
+      "status": "unread",
+      "timestamp": "2026-04-29T20:47:50.4413405Z"
+    },
+    {
+      "id": "7599f610-2fea-4fe0-9fef-9b64ea5035d1",
+      "from_agent": "GAMMA",
+      "to_agent": "BETA",
+      "subject": "GAMMA: Integrated Synthesis",
+      "content": "GAMMA completed synthesis. See output/agent-gamma-work.md",
+      "priority": "NORMAL",
+      "status": "unread",
+      "timestamp": "2026-04-29T20:47:50.4868180Z"
     }
   ],
   "agent_inboxes": {
     "ALPHA": {
-      "messages": [],
-      "unread_count": 0
+      "messages": [
+        {
+          "id": "8f801807-a893-46ee-947b-74fed81d2a52",
+          "from_agent": "GAMMA",
+          "to_agent": "ALPHA",
+          "subject": "GAMMA: Integrated Synthesis",
+          "content": "GAMMA completed synthesis. See output/agent-gamma-work.md",
+          "priority": "NORMAL",
+          "status": "unread",
+          "timestamp": "2026-04-29T20:47:50.4413405Z"
+        }
+      ],
+      "unread_count": 1
     },
     "BETA": {
       "messages": [
@@ -45,7 +76,7 @@
           "subject": "ALPHA: Test Complete",
           "content": "ALPHA test complete. Response: Hipoteza Riemanna to jeden z **7 ProblemĂłw Milenijnych** i pozostaje **nierozwiÄ…zana od 1859 roku** â€” ĹĽaden matematyk na Ĺ›wiecie jej nie udowodniĹ‚.  Nie jestem w stanie jej rozwiÄ…zaÄ‡. Jestem ",
           "priority": "high",
-          "status": "unread",
+          "status": "read",
           "timestamp": "2026-04-29T21:44:19.831259"
         },
         {
@@ -57,6 +88,16 @@
           "subject": "ALPHA: Mathematical Analysis Complete",
           "to_agent": "BETA",
           "id": "a1e5592e-b0be-4cb4-ac50-e7e8a646b170"
+        },
+        {
+          "id": "7599f610-2fea-4fe0-9fef-9b64ea5035d1",
+          "from_agent": "GAMMA",
+          "to_agent": "BETA",
+          "subject": "GAMMA: Integrated Synthesis",
+          "content": "GAMMA completed synthesis. See output/agent-gamma-work.md",
+          "priority": "NORMAL",
+          "status": "unread",
+          "timestamp": "2026-04-29T20:47:50.4868180Z"
         }
       ],
       "unread_count": 2
@@ -70,11 +111,11 @@
           "to_agent": "GAMMA",
           "content": "1. **ALPHA (analiza):** Python wygrywa szybko┼Ťci─ů tworzenia i ekosystemem (AI/data), a Go wydajno┼Ťci─ů runtime, prost─ů wsp├│┼ébie┼╝no┼Ťci─ů i mniejszym narzutem operacyjnym.  \r\n\r\n2. **BETA (alternatywa):** Zamiast ÔÇ×albo-alboÔÇŁ, sensowny wariant to Python do logiki/ML i Go do us┼éug API o du┼╝ym ruchu.  \r\n\r\n3. **GAMMA (synteza):** Je┼Ťli liczy si─Ö tempo i elastyczno┼Ť─ç ÔÇö Python; je┼Ťli stabilna wydajno┼Ť─ç i skalowanie backendu ÔÇö Go; w praktyce cz─Östo najlepszy jest uk┼éad hybrydowy.\r\n\r\n\r\nChanges   +0 -0\r\nRequests  1 Premium (19s)\r\nTokens    ÔćĹ 18.9k ÔÇó Ôćô 557 ÔÇó 17.9k (cached) ÔÇó 401 (reasoning)\r\n",
           "subject": "BETA: Creative Approach",
-          "status": "unread",
+          "status": "read",
           "id": "5c888cf2-b321-4f6c-b0ef-f29604c438b3"
         }
       ],
-      "unread_count": 1
+      "unread_count": 0
     }
   }
 }
